@@ -1,13 +1,10 @@
-import { Router } from "express"
+//Main router file that combines all route modules
 
-import authRoutes from "./auth.routes.js"
-import roomRoutes from "./room.routes.js"
-import messageRoutes from "./message.routes.js"
+import {Router} from 'express'
+import userAuthRoutes from './users/user.auth.js'
 
 const router = Router()
 
-router.use("/auth", authRoutes)
-router.use("/rooms", roomRoutes)
-router.use("/messages", messageRoutes)
+router.use('/auth',userAuthRoutes) //User authentication routes with sign-in and sign-up
 
 export default router

@@ -1,10 +1,11 @@
 interface InputFieldProps {
-  label: string;
-  type: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
-  icon?: React.ReactNode;
+  label: string
+  type: string
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  placeholder?: string
+  icon?: React.ReactNode
+  required?: boolean
 }
 
 const InputField: React.FC<InputFieldProps> = ({ label, type, value, onChange, placeholder, icon }) => (
