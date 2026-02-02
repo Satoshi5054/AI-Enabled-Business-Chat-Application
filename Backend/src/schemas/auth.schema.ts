@@ -1,3 +1,5 @@
+//Schema for user authentication of sign-in and sign-up using Zod
+
 import { z } from "zod"
 
 export const registerSchema = z.object({

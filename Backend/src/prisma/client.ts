@@ -1,12 +1,23 @@
+//Backend/src/prisma/client.ts
+//Prisma client setup with PostgreSQL adapter
+//Using connection pooling for efficient database connections
+
 import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import pg from "pg";
+
+const connectionString = `${process.env.DATABASE_URL}`;
+const pool = new pg.Pool({ connectionString });
+const adapter = new PrismaPg(pool);
 
 const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
+  prisma?: PrismaClient;
 };
 
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
+    adapter, 
     log: ["query", "error"],
   });
 

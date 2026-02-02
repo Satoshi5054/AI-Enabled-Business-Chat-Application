@@ -1,28 +1,28 @@
-
-import type { Request, Response, NextFunction } from "express"
+//Handles password hashing and JWT token generation and verification
+//Note: Ensure to set JWT_SECRET_KEY in your environment variables for token signing and verification.
+   
+import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 
-const JWT_SECRET = process.env.JWT_SECRET_KEY
-if (!JWT_SECRET) {
-  throw new Error("JWT_SECRET_KEY is not defined")
+const JWT_SECRET = process.env.JWT_SECRET_KEY!
+
+export const hashPassword = async (password:string) =>{
+    return await bcrypt.hash(password,10)
 }
 
-interface JwtUserPayload {
-  userId: string
+export const verifyPassword = async (password:string, hash:string) =>{
+    return bcrypt.compare(password,hash)
 }
 
-export const auth = (req:Request,res:Response,next:NextFunction) =>{
-    const header = req.get("authorization")
-    if(!header) return res.sendStatus(401)
-    
-    const token = header.split(" ")[1]
-    if (!token) return res.sendStatus(401)
 
-    try{
-        const decoded = jwt.verify(token,JWT_SECRET) as JwtUserPayload
-        req.senderId = decoded.userId
-        next()
-    }catch{
-        res.sendStatus(401)
+export const signToken = (user_id:string) =>{
+    return jwt.sign({ user_id }, JWT_SECRET, { expiresIn: "7d" })
+}
+
+export const verifyToken =  (token : string) => {
+    try {
+        return jwt.verify(token, JWT_SECRET) as { user_id: string };
+    } catch (error) {
+        throw new Error("Invalid or expired token");
     }
 }
