@@ -1,5 +1,5 @@
 //Handles password hashing and JWT token generation and verification
-//Note: Ensure to set JWT_SECRET_KEY in your environment variables for token signing and verification.
+//Note: Ensure to set JWT_SECRET_KEY in your environment variables for token signing and verification
    
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
