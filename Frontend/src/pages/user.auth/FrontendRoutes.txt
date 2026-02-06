@@ -1,0 +1,2 @@
+/auth/signin    :User Login
+/auth/register  :User Registration

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import AuthLayout from "../components/layouts/auth.layout";
+import AuthLayout from "../../components/layouts/auth.layout";
 import { Mail, Lock } from "lucide-react";
-import InputField from "../components/ui/user.input.field";
+import InputField from "../../components/ui/user.input.field";
 import { Link, useNavigate } from "react-router-dom";
-import { signIn } from "../services/auth.service";
+import { signIn } from "../../services/auth.service";
 
 const SignInPage = () => {
   const navigate = useNavigate();

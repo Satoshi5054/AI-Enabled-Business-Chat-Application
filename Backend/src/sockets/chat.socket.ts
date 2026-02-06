@@ -12,9 +12,14 @@ export const chatSocket = (io: Server, socket: Socket) =>{
                     }
                 }
             })
+            
+            if (!isMember) {
+            socket.emit("error", "Not a member of this chat")
+            return
+             }
         }catch(error){
-            console.error("Error checking membership:", error);
-            return;
+            console.error("Error checking membership:", error)
+            return
         }
     })
 }

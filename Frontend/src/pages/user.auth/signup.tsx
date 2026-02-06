@@ -2,9 +2,9 @@ import { useState } from "react"
 import {Link, useNavigate} from 'react-router-dom'
 import { User, Mail, Lock } from 'lucide-react'
 
-import AuthLayout from '../components/layouts/auth.layout'
-import InputField from '../components/ui/user.input.field'
-import {signUp} from "../services/auth.service"
+import AuthLayout from '../../components/layouts/auth.layout'
+import InputField from '../../components/ui/user.input.field'
+import {signUp} from "../../services/auth.service"
 
 const SignUpPage = () => {
   const navigate = useNavigate()
