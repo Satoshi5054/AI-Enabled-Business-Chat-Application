@@ -7,10 +7,10 @@ datasource db {
 }
 
 model User {
-  user_id       String    @id @default(uuid())
-  user_email    String    @unique
-  user_name     String
-  user_password String
+  userId       String    @id @default(uuid())
+  userEmail    String    @unique
+  userName     String
+  userPassword String
   createdAt     DateTime  @default(now())
 
   messages      Message[]
@@ -18,8 +18,8 @@ model User {
 }
 
 model ChatRoom {
-  chat_id     String       @id @default(uuid())
-  chat_name   String
+  chatId     String       @id @default(uuid())
+  chatName   String
   createdAt   DateTime     @default(now())
 
   messages    Message[]
@@ -31,21 +31,21 @@ model ChatMember {
   userId    String
   chatId    String
 
-  user      User     @relation(fields: [userId], references: [user_id])
-  chatRoom ChatRoom @relation(fields: [chatId], references: [chat_id])
+  user      User     @relation(fields: [userId], references: [userId])
+  chatRoom ChatRoom @relation(fields: [chatId], references: [chatId])
 
   @@unique([userId, chatId])
 }
 
 model Message {
-  message_id      String   @id @default(uuid())
+  messageId      String   @id @default(uuid())
   content         String
   senderId        String
   roomId          String
   createdAt       DateTime @default(now())
 
-  sender          User     @relation(fields: [senderId], references: [user_id])
-  room            ChatRoom @relation(fields: [roomId], references: [chat_id])
+  sender          User     @relation(fields: [senderId], references: [userId])
+  room            ChatRoom @relation(fields: [roomId], references: [chatId])
 
   @@index([roomId, createdAt])
 }

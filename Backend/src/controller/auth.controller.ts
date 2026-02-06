@@ -8,7 +8,7 @@ export const userRegistration = async (req : Request, res : Response) => {
 
     // 1. Check if the user already exists
     const existingUser = await prisma.user.findUnique({
-        where: { user_email: email }
+        where: { userEmail: email }
     });
 
     if (existingUser) {
@@ -18,14 +18,14 @@ export const userRegistration = async (req : Request, res : Response) => {
     // 2. If not then create the user
     const createUser = await prisma.user.create({
         data: {
-            user_email: email,
-            user_name: name,
-            user_password: await hashPassword(password)
+            userEmail: email,
+            userName: name,
+            userPassword: await hashPassword(password)
         }
     })
 
     // 3. Return JWT token
-    res.json({token: signToken(createUser.user_id)})
+    res.json({token: signToken(createUser.userId)})
 }
 
 //Login the user 
@@ -38,14 +38,14 @@ export const userLogin = async (req : Request, res : Response) => {
         try {
             const decoded = verifyToken(token);
             const user = await prisma.user.findUnique({
-                where: { user_id: decoded.user_id },
-                select: { user_id: true, user_email: true, user_name: true } 
+                where: { userId: decoded.user_id },
+                select: { userId: true, userEmail: true, userName: true } 
             });
 
             if (user) {
                 return res.json({ 
                     message: "Login successful via token", 
-                    token: signToken(user.user_id), // Refresh the token
+                    token: signToken(user.userId), // Refresh the token
                     user 
                 });
             }
@@ -57,20 +57,20 @@ export const userLogin = async (req : Request, res : Response) => {
 
     // 2. Email/Password-based Login
     const user = await prisma.user.findUnique({
-        where: { user_email: req.body.email }
+        where: { userEmail: req.body.email }
     })
 
     if(!user) 
         return res.status(401).json({ message: "Invalid email or password" })
 
-    const validPassword = await verifyPassword(req.body.password, user.user_password)
+    const validPassword = await verifyPassword(req.body.password, user.userPassword)
 
     if(!validPassword) 
         return res.status(401).json({ message: "Invalid email or password" })
 
     res.json({
         message: "Login successful via credentials", 
-        token: signToken(user.user_id),
-        user: { id: user.user_id, email: user.user_email, name: user.user_name }
+        token: signToken(user.userId),
+        user: { id: user.userId, email: user.userEmail, name: user.userName }
     })
 }

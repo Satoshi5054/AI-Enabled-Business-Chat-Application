@@ -1,8 +1,8 @@
-import { Server } from "socket.io"
-import { prisma } from "../prisma/client.js"
+import { Server } from "socket.io";
+//import { chatSocket } from "./chat.socket";
 
-export const initSocket = (server: any) => {
-  const io = new Server(server, {
+export const initSocket = (httpServer: any) => {
+  const io = new Server(httpServer, {
     cors: {
       origin: "*",
     },
@@ -11,23 +11,7 @@ export const initSocket = (server: any) => {
   io.on("connection", (socket) => {
     console.log("Socket connected:", socket.id);
 
-    socket.on("join_room", (roomId: string) => {
-      socket.join(roomId);
-    });
-
-    socket.on("send_message", async (payload) => {
-      const { content, senderId, roomId } = payload;
-
-      const message = await prisma.message.create({
-        data: {
-          content,
-          senderId,
-          roomId,
-        },
-      });
-
-      io.to(roomId).emit("receive_message", message);
-    });
+    //chatSocket(io, socket);
 
     socket.on("disconnect", () => {
       console.log("Socket disconnected:", socket.id);
